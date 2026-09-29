@@ -3,14 +3,42 @@ import {
   Outlet,
   Link,
   createRootRouteWithContext,
+  redirect,
   useRouter,
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
+import { createIsomorphicFn } from "@tanstack/react-start";
+import { getCookie, getRequestUrl } from "@tanstack/react-start/server";
 import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
+import { ComingSoonCover } from "../components/ComingSoonCover";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import {
+  decideSitePreview,
+  SITE_PREVIEW_COOKIE,
+  type SitePreviewDecision,
+} from "../lib/site-preview";
+
+const readSitePreview = createIsomorphicFn()
+  .server((): SitePreviewDecision => {
+    const url = getRequestUrl({ xForwardedHost: true, xForwardedProto: true });
+    return decideSitePreview({
+      href: url.href,
+      cookie: getCookie(SITE_PREVIEW_COOKIE),
+    });
+  })
+  .client((): SitePreviewDecision =>
+    decideSitePreview({
+      href: window.location.href,
+      cookie: document.cookie
+        .split(";")
+        .some((part) => part.trim() === `${SITE_PREVIEW_COOKIE}=1`)
+        ? "1"
+        : undefined,
+    }),
+  );
 
 function NotFoundComponent() {
   return (
@@ -84,6 +112,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:description", content: "Stable, transparent payment processing for high-risk businesses — with the guidance to grow safely." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "robots", content: "noindex, nofollow" },
     ],
     links: [
       {
@@ -99,6 +128,19 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
     ],
   }),
+  loader: () => {
+    const decision = readSitePreview();
+    if (decision.redirectHref) {
+      if (typeof document !== "undefined" && decision.setCookie) {
+        document.cookie = decision.setCookie;
+      }
+      throw redirect({
+        href: decision.redirectHref,
+        headers: decision.setCookie ? { "Set-Cookie": decision.setCookie } : undefined,
+      });
+    }
+    return { preview: decision.preview };
+  },
   shellComponent: RootShell,
   component: RootComponent,
   notFoundComponent: NotFoundComponent,
@@ -121,6 +163,9 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const { preview } = Route.useLoaderData();
+
+  if (!preview) return <ComingSoonCover />;
 
   return (
     <QueryClientProvider client={queryClient}>
