@@ -87,6 +87,6 @@ describe("merchant health taxonomy header", () => {
     expect(resources).not.toMatch(/\d+(\.\d+)?%/);
     expect(tag).toContain('createFileRoute("/tags/$slug")');
     expect(tag).toContain("notFound()");
-    expect(tag).toContain("MERCHANT_HEALTH_PATH}#${topic.anchor}");
+    expect(tag).toContain("MERCHANT_HEALTH_PATH}#${merchant.anchor}");
   });
 });

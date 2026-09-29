@@ -2,14 +2,16 @@ import { createFileRoute } from "@tanstack/react-router";
 import { createIsomorphicFn } from "@tanstack/react-start";
 import { getRequestUrl } from "@tanstack/react-start/server";
 import { Footer, Header } from "../index";
+import { AcademyCardDetails } from "../../components/AcademyKnowledgeCards";
+import { AcademyHeaderNav } from "../../components/AcademyHeaderNav";
 import {
   ACADEMY_RISK_DESCRIPTION,
   ACADEMY_RISK_KEYWORDS,
   ACADEMY_RISK_PATH,
   ACADEMY_RISK_ROBOTS,
   ACADEMY_RISK_SOCIAL_DESCRIPTION,
+  ACADEMY_RISK_SECTIONS,
   ACADEMY_RISK_TITLE,
-  ACADEMY_RISK_TOPICS,
   academyRiskSchema,
 } from "../../lib/academy-risk-seo";
 
@@ -58,27 +60,9 @@ function AcademyRiskPage() {
         <span className="bg-chart-4" />
       </div>
       <Header />
-      <nav aria-label="Breadcrumb" className="border-b border-border bg-background">
-        <ol className="mx-auto flex max-w-7xl flex-wrap items-center gap-2 px-5 py-4 text-sm text-muted-foreground lg:px-8">
-          <li>
-            <a href="/" className="inline-flex min-h-6 items-center underline decoration-border underline-offset-4 hover:text-foreground hover:decoration-foreground">
-              Home
-            </a>
-          </li>
-          <li aria-hidden="true">/</li>
-          <li>
-            <a href="/#academy" className="inline-flex min-h-6 items-center underline decoration-border underline-offset-4 hover:text-foreground hover:decoration-foreground">
-              Merchant Academy
-            </a>
-          </li>
-          <li aria-hidden="true">/</li>
-          <li aria-current="page" className="font-semibold text-foreground">
-            Merchant Risk
-          </li>
-        </ol>
-      </nav>
       <article className="bg-background py-24 lg:py-32">
         <div className="mx-auto max-w-7xl px-5 lg:px-8">
+          <AcademyHeaderNav />
           <header className="max-w-3xl">
             <p className="mb-3 text-sm font-semibold text-accent">Payments Academy</p>
             <h1 className="font-display text-3xl font-bold tracking-tight sm:text-4xl">
@@ -86,11 +70,16 @@ function AcademyRiskPage() {
             </h1>
             <p className="mt-6 text-lg leading-relaxed text-muted-foreground">{ACADEMY_RISK_DESCRIPTION}</p>
           </header>
-          <ul className="mt-10 max-w-3xl list-disc space-y-2 pl-6 text-foreground">
-            {ACADEMY_RISK_TOPICS.map((topic) => (
-              <li key={topic}>{topic}</li>
+          <div className="mt-12 max-w-3xl space-y-10">
+            {ACADEMY_RISK_SECTIONS.map((section) => (
+              <section id={section.id} key={section.name}>
+                <h2 className="font-display text-2xl font-bold tracking-tight">{section.name}</h2>
+                <h3 className="mt-4 text-lg font-semibold">{section.question}</h3>
+                <p className="mt-3 leading-relaxed text-muted-foreground">{section.answer}</p>
+                <AcademyCardDetails id={section.id} />
+              </section>
             ))}
-          </ul>
+          </div>
         </div>
       </article>
       <Footer />

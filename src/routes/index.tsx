@@ -2,7 +2,6 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import {
   ArrowUpRight,
-  BookOpen,
   Check,
   ChevronDown,
   Gauge,
@@ -15,8 +14,10 @@ import {
   LineChart,
 } from "lucide-react";
 import { KithPayLogo } from "../components/KithPayLogo";
+import { AcademyKnowledgeCards } from "../components/AcademyKnowledgeCards";
 import { MerchantHealthHeader } from "../components/MerchantHealthHeader";
-import { ACADEMY_RISK_PATH, ACADEMY_RISK_SOCIAL_DESCRIPTION } from "../lib/academy-risk-seo";
+import { ACADEMY_PATH } from "../lib/academy-risk-seo";
+import { readOrigin } from "../lib/request-origin";
 import { MERCHANT_HEALTH_FAQ, MERCHANT_HEALTH_PATH } from "../lib/merchant-health-seo";
 import {
   DropdownMenu,
@@ -77,22 +78,21 @@ function RouteFlow() {
   );
 }
 export const Route = createFileRoute("/")({
-  head: () => ({
+  loader: () => ({ origin: readOrigin() }),
+  head: ({ loaderData }) => ({
     meta: [
       { title: "KithPay — Payment Infrastructure for High-Risk Merchants" },
       { name: "description", content: "Stable, transparent payment processing for high-risk businesses — with the guidance to grow safely." },
       { property: "og:title", content: "KithPay — Payment Infrastructure for High-Risk Merchants" },
       { property: "og:description", content: "Stable, transparent payment processing for high-risk businesses — with the guidance to grow safely." },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: `${loaderData?.origin ?? ""}/` },
       { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [{ rel: "canonical", href: `${loaderData?.origin ?? ""}/` }],
   }),
   component: Index,
 });
-
-const Placeholder = ({ className = "" }: { className?: string }) => (
-  <span aria-hidden="true" className={`block rounded-full bg-muted ${className}`} />
-);
 
 const MiniChart = () => (
   <svg viewBox="0 0 420 120" className="h-full w-full" aria-hidden="true">
@@ -136,13 +136,13 @@ const NAV_ITEMS = [
       { label: "Subscriptions" },
     ],
   },
-  { label: "Academy", href: "#academy" },
+  { label: "Academy", href: "/#academy" },
   {
     label: "Company",
     items: [
       { label: "About" },
-      { label: "Academy", href: "#academy" },
-      { label: "Contact", href: "#diagnostic" },
+      { label: "Academy", href: "/#academy" },
+      { label: "Contact", href: "/#diagnostic" },
     ],
   },
 ] as const;
@@ -199,7 +199,7 @@ export function Header() {
           ))}
         </nav>
         <div className="ml-auto flex justify-end lg:ml-0">
-          <a href="#diagnostic" className="flex h-10 items-center gap-2 rounded-md bg-primary px-4 text-sm font-semibold text-primary-foreground">
+          <a href="/#diagnostic" className="flex h-10 items-center gap-2 rounded-md bg-primary px-4 text-sm font-semibold text-primary-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring">
             Talk to an advisor <ArrowUpRight className="size-4" />
           </a>
         </div>
@@ -314,8 +314,8 @@ function Hero() {
             Payment infrastructure for high-risk merchants — built on multi-bank stability, clear risk guidance, and advisors who help you stay healthy for the long run.
           </p>
           <div className="mt-10 flex flex-wrap gap-3">
-            <a href="#diagnostic" className="flex h-12 items-center gap-2 rounded-md bg-primary px-5 font-semibold text-primary-foreground">Get your free health report <ArrowUpRight className="size-4" /></a>
-            <a href="#academy" className="flex h-12 items-center rounded-md border border-border bg-card px-5 font-semibold">Explore the Academy</a>
+            <a href="#diagnostic" className="flex h-12 items-center gap-2 rounded-md bg-primary px-5 font-semibold text-primary-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring">Get your free health report <ArrowUpRight className="size-4" /></a>
+            <a href="#academy" className="flex h-12 items-center rounded-md border border-border bg-card px-5 font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring">Explore the Academy</a>
           </div>
           <div className="mt-10 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
             <div className="flex -space-x-2">{["bg-chart-1","bg-chart-2","bg-chart-3","bg-chart-4"].map((c) => <span key={c} className={`size-8 rounded-full border-2 border-background ${c}`} />)}</div>
@@ -560,42 +560,15 @@ function Diagnostics() {
 
 function Academy() {
   return (
-    <section id="academy" className="bg-card py-24 lg:py-32">
+    <section id="academy" className="bg-card py-24 lg:py-32" aria-labelledby="academy-section-title">
       <div className="mx-auto max-w-7xl px-5 lg:px-8">
-        <div className="mb-12 flex flex-wrap items-end justify-between gap-6">
-          <div><p className="mb-3 text-sm font-semibold text-accent">Merchant Academy</p><h2 className="font-display text-3xl font-bold tracking-tight sm:text-4xl">Learn to run it right.</h2></div>
-          <a href="#academy" className="inline-flex min-h-8 items-center gap-2 text-sm font-semibold text-primary">View all articles <ArrowUpRight className="size-4" /></a>
-        </div>
-        <div className="grid gap-5 md:grid-cols-3">
-          <article className="overflow-hidden rounded-lg border border-border bg-background">
-            <a href={ACADEMY_RISK_PATH} className="block h-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring">
-              <div className="relative h-48 bg-chart-1/10">
-                <div className="absolute inset-0 text-chart-1 [background-image:radial-gradient(currentColor_0.7px,transparent_0.7px)] [background-size:14px_14px] opacity-20" />
-                <span className="absolute left-6 top-6 grid size-10 place-items-center rounded-md bg-card shadow-sm"><BookOpen className="size-4 text-chart-1" /></span>
-              </div>
-              <div className="p-6">
-                <p className="mb-3 text-sm font-semibold text-accent">Payments Academy</p>
-                <h3 className="font-display text-xl font-bold tracking-tight">Merchant Risk, Disputes &amp; Record Protection</h3>
-                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{ACADEMY_RISK_SOCIAL_DESCRIPTION}</p>
-              </div>
+        <AcademyKnowledgeCards
+          action={
+            <a href={ACADEMY_PATH} className="inline-flex min-h-8 items-center gap-2 text-sm font-semibold text-primary">
+              View all articles <ArrowUpRight className="size-4" />
             </a>
-          </article>
-          {/* Remaining article slots stay empty until real content is provided */}
-          {([[ShieldCheck, "text-chart-4", "bg-chart-4/10"], [Layers3, "text-chart-3", "bg-chart-3/15"]] as const).map(([Icon, c, b], i) => (
-            <article key={i} className="overflow-hidden rounded-lg border border-dashed border-border bg-background">
-              <div className={`relative h-48 ${b}`}>
-                <div className={`absolute inset-0 ${c} [background-image:radial-gradient(currentColor_0.7px,transparent_0.7px)] [background-size:14px_14px] opacity-20`} />
-                <span className="absolute left-6 top-6 grid size-10 place-items-center rounded-md bg-card shadow-sm"><Icon className={`size-4 ${c}`} /></span>
-              </div>
-              <div className="p-6">
-                <Placeholder className="mb-4 h-2.5 w-20" />
-                <Placeholder className="mb-3 h-3.5 w-[88%]" />
-                <Placeholder className="mb-7 h-3.5 w-[62%]" />
-                <Placeholder className="h-2 w-24" />
-              </div>
-            </article>
-          ))}
-        </div>
+          }
+        />
       </div>
     </section>
   );

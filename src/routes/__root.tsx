@@ -78,13 +78,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "KithPay" },
-      { name: "description", content: "A modern payments platform." },
+      { name: "description", content: "Stable, transparent payment processing for high-risk businesses — with the guidance to grow safely." },
       { name: "author", content: "KithPay" },
       { property: "og:title", content: "KithPay" },
-      { property: "og:description", content: "A modern payments platform." },
+      { property: "og:description", content: "Stable, transparent payment processing for high-risk businesses — with the guidance to grow safely." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
       {

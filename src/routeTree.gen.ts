@@ -12,6 +12,8 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as MerchantHealthRouteImport } from './routes/merchant-health'
 import { Route as ResourcesRouteImport } from './routes/resources'
+import { Route as AcademyIndexRouteImport } from './routes/academy/index'
+import { Route as AcademyAdvancedMerchantGuidesRouteImport } from './routes/academy/advanced-merchant-guides'
 import { Route as AcademyMerchantRiskFundamentalsRouteImport } from './routes/academy/merchant-risk-fundamentals'
 import { Route as TagsSlugRouteImport } from './routes/tags/$slug'
 
@@ -30,6 +32,17 @@ const ResourcesRoute = ResourcesRouteImport.update({
   path: '/resources',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AcademyIndexRoute = AcademyIndexRouteImport.update({
+  id: '/academy/',
+  path: '/academy/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AcademyAdvancedMerchantGuidesRoute =
+  AcademyAdvancedMerchantGuidesRouteImport.update({
+    id: '/academy/advanced-merchant-guides',
+    path: '/academy/advanced-merchant-guides',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const AcademyMerchantRiskFundamentalsRoute =
   AcademyMerchantRiskFundamentalsRouteImport.update({
     id: '/academy/merchant-risk-fundamentals',
@@ -46,23 +59,29 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/merchant-health': typeof MerchantHealthRoute
   '/resources': typeof ResourcesRoute
+  '/academy/advanced-merchant-guides': typeof AcademyAdvancedMerchantGuidesRoute
   '/academy/merchant-risk-fundamentals': typeof AcademyMerchantRiskFundamentalsRoute
   '/tags/$slug': typeof TagsSlugRoute
+  '/academy/': typeof AcademyIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/merchant-health': typeof MerchantHealthRoute
   '/resources': typeof ResourcesRoute
+  '/academy/advanced-merchant-guides': typeof AcademyAdvancedMerchantGuidesRoute
   '/academy/merchant-risk-fundamentals': typeof AcademyMerchantRiskFundamentalsRoute
   '/tags/$slug': typeof TagsSlugRoute
+  '/academy': typeof AcademyIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/merchant-health': typeof MerchantHealthRoute
   '/resources': typeof ResourcesRoute
+  '/academy/advanced-merchant-guides': typeof AcademyAdvancedMerchantGuidesRoute
   '/academy/merchant-risk-fundamentals': typeof AcademyMerchantRiskFundamentalsRoute
   '/tags/$slug': typeof TagsSlugRoute
+  '/academy/': typeof AcademyIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -70,30 +89,38 @@ export interface FileRouteTypes {
     | '/'
     | '/merchant-health'
     | '/resources'
+    | '/academy/advanced-merchant-guides'
     | '/academy/merchant-risk-fundamentals'
     | '/tags/$slug'
+    | '/academy/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/merchant-health'
     | '/resources'
+    | '/academy/advanced-merchant-guides'
     | '/academy/merchant-risk-fundamentals'
     | '/tags/$slug'
+    | '/academy'
   id:
     | '__root__'
     | '/'
     | '/merchant-health'
     | '/resources'
+    | '/academy/advanced-merchant-guides'
     | '/academy/merchant-risk-fundamentals'
     | '/tags/$slug'
+    | '/academy/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   MerchantHealthRoute: typeof MerchantHealthRoute
   ResourcesRoute: typeof ResourcesRoute
+  AcademyAdvancedMerchantGuidesRoute: typeof AcademyAdvancedMerchantGuidesRoute
   AcademyMerchantRiskFundamentalsRoute: typeof AcademyMerchantRiskFundamentalsRoute
   TagsSlugRoute: typeof TagsSlugRoute
+  AcademyIndexRoute: typeof AcademyIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -119,6 +146,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ResourcesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/academy/': {
+      id: '/academy/'
+      path: '/academy'
+      fullPath: '/academy/'
+      preLoaderRoute: typeof AcademyIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/academy/advanced-merchant-guides': {
+      id: '/academy/advanced-merchant-guides'
+      path: '/academy/advanced-merchant-guides'
+      fullPath: '/academy/advanced-merchant-guides'
+      preLoaderRoute: typeof AcademyAdvancedMerchantGuidesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/academy/merchant-risk-fundamentals': {
       id: '/academy/merchant-risk-fundamentals'
       path: '/academy/merchant-risk-fundamentals'
@@ -140,8 +181,10 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   MerchantHealthRoute: MerchantHealthRoute,
   ResourcesRoute: ResourcesRoute,
+  AcademyAdvancedMerchantGuidesRoute: AcademyAdvancedMerchantGuidesRoute,
   AcademyMerchantRiskFundamentalsRoute: AcademyMerchantRiskFundamentalsRoute,
   TagsSlugRoute: TagsSlugRoute,
+  AcademyIndexRoute: AcademyIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

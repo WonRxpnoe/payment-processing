@@ -1,3 +1,5 @@
+export const ACADEMY_PATH = "/academy";
+
 export const ACADEMY_RISK_PATH = "/academy/merchant-risk-fundamentals";
 
 export const ACADEMY_RISK_TITLE =
@@ -15,10 +17,28 @@ export const ACADEMY_RISK_KEYWORDS =
 export const ACADEMY_RISK_ROBOTS =
   "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1";
 
-export const ACADEMY_RISK_TOPICS = [
-  "High-risk merchant factors, including GLP-1 and CBD",
-  "Refund vs. dispute vs. chargeback",
-  "MATCH database merchant record",
+export const ACADEMY_RISK_SECTIONS = [
+  {
+    id: "high-risk",
+    name: "What Makes a Merchant High Risk?",
+    question: "What makes a business classified as a high-risk merchant?",
+    answer:
+      "High risk is a composite evaluation rather than a single verdict. Risk drivers include industry vertical, regulatory scrutinies (e.g., GLP-1, CBD, adult products), card-not-present (CNP) transaction environments, recurring subscription billing, fulfillment lead times, and chargeback history. High-risk classification reflects structural payment risk rather than poor operational quality.",
+  },
+  {
+    id: "refund-dispute-chargeback",
+    name: "Refund vs. Dispute vs. Chargeback",
+    question: "What is the difference between a refund, a dispute, and a chargeback?",
+    answer:
+      "A refund is resolved directly between the merchant and the customer. A dispute occurs when a cardholder asks their issuing bank to question a transaction. A chargeback enters official card network dispute resolution channels where funds are forcibly debited from the merchant.",
+  },
+  {
+    id: "merchant-record",
+    name: "Protect Your Merchant Record",
+    question: "What is the MATCH list in merchant processing?",
+    answer:
+      "The MATCH (Member Alert to Control High-Risk) list is an industry database maintained by Mastercard used by acquirers to track terminated merchant accounts. Placement on MATCH severely limits a business's ability to obtain payment processing.",
+  },
 ] as const;
 
 export function academyRiskSchema(pageUrl: string) {
@@ -32,9 +52,9 @@ export function academyRiskSchema(pageUrl: string) {
         "@type": "WebPage",
         "@id": webpageId,
         url: pageUrl,
-        name: "Merchant Risk, Disputes & Record Protection",
-        description: ACADEMY_RISK_DESCRIPTION,
-        inLanguage: "en-US",
+        name: "Merchant Risk & Payment Fundamentals Academy",
+        description:
+          "Educational guide detailing high-risk classification vectors, dispute mechanics, and merchant record protection protocols.",
         isPartOf: {
           "@type": "WebSite",
           name: "KithPay",
@@ -53,37 +73,38 @@ export function academyRiskSchema(pageUrl: string) {
               "@type": "ListItem",
               position: 2,
               name: "Merchant Academy",
-              item: `${origin}/#academy`,
+              item: `${origin}${ACADEMY_PATH}`,
             },
             {
               "@type": "ListItem",
               position: 3,
-              name: "Merchant Risk",
+              name: "Risk & Compliance Essentials",
               item: pageUrl,
             },
           ],
         },
       },
       {
-        "@type": "Article",
-        "@id": `${pageUrl}#article`,
-        isPartOf: { "@id": webpageId },
-        headline: "Merchant Risk, Disputes & Record Protection",
-        description: ACADEMY_RISK_DESCRIPTION,
-        inLanguage: "en-US",
-        mainEntityOfPage: pageUrl,
-        author: {
-          "@type": "Organization",
-          name: "KithPay",
-        },
-        publisher: {
-          "@type": "Organization",
-          name: "KithPay",
-          logo: {
-            "@type": "ImageObject",
-            url: `${origin}/brand/kithpay-logo.svg`,
+        "@type": "ItemList",
+        "@id": `${pageUrl}#itemList`,
+        name: "Merchant Risk & Payment Management Essentials",
+        itemListElement: ACADEMY_RISK_SECTIONS.map((section, index) => ({
+          "@type": "ListItem",
+          position: index + 1,
+          name: section.name,
+        })),
+      },
+      {
+        "@type": "FAQPage",
+        "@id": `${pageUrl}#faq`,
+        mainEntity: ACADEMY_RISK_SECTIONS.map((section) => ({
+          "@type": "Question",
+          name: section.question,
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: section.answer,
           },
-        },
+        })),
       },
     ],
   };

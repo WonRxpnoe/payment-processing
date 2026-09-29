@@ -39,10 +39,8 @@ describe("homepage iteration — thicken", () => {
     expect(education).toContain("size-11");
 
     const academy = sliceBetween("function Academy", "function Footer");
-    expect(academy).toContain("h-2.5 w-20");
-    expect(academy).toContain("h-3.5 w-[88%]");
-    expect(academy).toContain("h-3.5 w-[62%]");
-    expect(academy).toContain("h-2 w-24");
+    expect(academy).toContain("<AcademyKnowledgeCards");
+    expect(academy).toContain("View all articles");
     expect(academy).not.toContain("h-1.5 w-20");
   });
 
@@ -72,8 +70,8 @@ describe("homepage iteration — fill gaps", () => {
     ]) {
       expect(source).toContain(`label: "${label}"`);
     }
-    expect(source).toContain('href: "#academy"');
-    expect(source).toContain('href: "#diagnostic"');
+    expect(source).toContain('href: "/#academy"');
+    expect(source).toContain('href: "/#diagnostic"');
     expect(source).toContain('NAV_ITEMS.filter((item) => "items" in item)');
   });
 
@@ -103,6 +101,8 @@ describe("brand", () => {
     expect(root).toContain('title: "KithPay"');
     expect(root).toContain('content: "KithPay"');
     expect(root).not.toContain("Aurelis");
+    expect(root).not.toContain("@Lovable");
+    expect(root).not.toContain("A modern payments platform.");
   });
 });
 
@@ -157,16 +157,31 @@ describe("merchant health", () => {
 describe("academy risk", () => {
   it("links the first academy card to a crawlable fundamentals page", () => {
     const academy = sliceBetween("function Academy", "function Footer");
+    const cards = readFileSync(join(process.cwd(), "src/components/AcademyKnowledgeCards.tsx"), "utf8");
     const seo = readFileSync(join(process.cwd(), "src/lib/academy-risk-seo.ts"), "utf8");
     const page = readFileSync(join(process.cwd(), "src/routes/academy/merchant-risk-fundamentals.tsx"), "utf8");
-    expect(academy).toContain("href={ACADEMY_RISK_PATH}");
-    expect(academy).toContain("Merchant Risk, Disputes &amp; Record Protection");
-    expect(academy).toContain("h-2.5 w-20");
+    expect(academy).toContain("<AcademyKnowledgeCards");
+    expect(cards).toContain("What Makes a Merchant High Risk?");
+    expect(cards).toContain("Refund vs. Dispute vs. Chargeback");
+    expect(cards).toContain("Protect Your Merchant Record");
+    expect(cards).toContain("href={`${ACADEMY_RISK_PATH}#${card.id}`}");
+    expect(cards).toContain("<article");
+    expect(cards).toContain("<header");
+    expect(cards).toContain("<footer");
+    expect(cards).not.toContain("cursor-pointer");
+    expect(cards).not.toContain("text-indigo-");
+    expect(cards).not.toContain("text-gray-");
+    expect(cards).not.toContain("bg-amber-");
+    expect(cards).not.toContain("bg-rose-");
     expect(source).toContain("KithPay — Payment Infrastructure for High-Risk Merchants");
     expect(seo).toContain('"/academy/merchant-risk-fundamentals"');
     expect(seo).toContain('"@context": "https://schema.org"');
-    expect(seo).toContain('"@type": "Article"');
+    expect(seo).toContain('"@type": "ItemList"');
+    expect(seo).toContain('"@type": "FAQPage"');
+    expect(seo).toContain('name: "Merchant Academy"');
+    expect(seo).toContain('name: "Risk & Compliance Essentials"');
     expect(seo).toContain('name: "KithPay"');
+    expect(seo).toContain("severely limits");
     expect(seo).not.toContain("yourdomain.com");
     expect(seo).not.toContain("og-academy-risk.jpg");
     expect(page).toContain('rel: "canonical"');
@@ -174,6 +189,58 @@ describe("academy risk", () => {
     expect(page).toContain('type: "application/ld+json"');
     expect(page).not.toContain("yourdomain.com");
     expect(page).not.toContain("og-academy-risk.jpg");
+  });
+});
+
+describe("academy advanced guide", () => {
+  it("publishes crawlable head tags without a missing social image", () => {
+    const seo = readFileSync(join(process.cwd(), "src/lib/academy-advanced-seo.ts"), "utf8");
+    const page = readFileSync(join(process.cwd(), "src/routes/academy/advanced-merchant-guides.tsx"), "utf8");
+    const index = readFileSync(join(process.cwd(), "src/routes/academy/index.tsx"), "utf8");
+    expect(seo).toContain('"/academy/advanced-merchant-guides"');
+    expect(seo).toContain("Advanced Merchant Payments Guide: PCI, Pricing & Subscriptions | Academy");
+    expect(seo).toContain("shared PCI DSS compliance");
+    expect(seo).toContain('"@context": "https://schema.org"');
+    expect(seo).toContain('"@type": "WebPage"');
+    expect(seo).toContain('"@type": "ItemList"');
+    expect(seo).toContain('"@type": "FAQPage"');
+    expect(seo).toContain('name: "Merchant Academy"');
+    expect(seo).toContain('name: EXPANDED_GUIDES_LABEL');
+    expect(seo).toContain("Understand Your Merchant Account Ecosystem");
+    expect(seo).toContain("Who approves a merchant account application?");
+    expect(seo).toContain("final account approval reside with the acquiring bank.");
+    expect(seo).toContain('name: "KithPay"');
+    expect(page).toContain("<ViewAllAcademyHeaderNav />");
+    expect(page).toContain("{faq.question}");
+    expect(page).toContain("{faq.answer}");
+    expect(seo).not.toContain("yourdomain.com");
+    expect(seo).not.toContain("og-academy-advanced.jpg");
+    expect(page).toContain('rel: "canonical"');
+    expect(page).toContain("ACADEMY_ADVANCED_PATH");
+    expect(page).toContain('property: "og:title", content: ACADEMY_ADVANCED_SOCIAL_TITLE');
+    expect(page).toContain('type: "application/ld+json"');
+    expect(page).not.toContain("og:image");
+    expect(page).not.toContain("twitter:image");
+    expect(page).not.toContain("yourdomain.com");
+    const extended = readFileSync(join(process.cwd(), "src/components/AcademyExtendedCards.tsx"), "utf8");
+    expect(index).toContain("<AcademyExtendedCards />");
+    expect(index).toContain("<AcademyHeaderNav showBreadcrumb={false}");
+    expect(index).toContain("showBreadcrumb={false}");
+    expect(index).toContain("outsourced PCI, and recurring billing");
+    expect(page).toContain("id={faq.id}");
+    expect(extended).toContain("Understand Your Merchant Account Architecture");
+    expect(extended).toContain("Why Your Payment Processing Pricing Looks Like This");
+    expect(extended).toContain("PCI Compliance When Payments Are Outsourced");
+    expect(extended).toContain("Recurring & Subscription Billing Done Right");
+    expect(extended).toContain("href={`${ACADEMY_ADVANCED_PATH}#${card.id}`}");
+    expect(extended).toContain("<article");
+    expect(extended).toContain("<footer");
+    expect(extended).toContain("may request an acquirer review");
+    expect(extended).not.toContain("enables rate renegotiation");
+    expect(extended).not.toContain("cursor-pointer");
+    expect(extended).not.toContain("text-gray-");
+    expect(extended).not.toContain("text-blue-600");
+    expect(source).toContain("KithPay — Payment Infrastructure for High-Risk Merchants");
   });
 });
 
@@ -204,9 +271,10 @@ describe("homepage — quality", () => {
   it("does not use placeholder links that jump to the top of the page", () => {
     expect(source).not.toContain('href: "#"');
     expect(source).not.toContain('href="#"');
-    expect(source).toContain('href: "#academy"');
-    expect(source).toContain('href: "#diagnostic"');
+    expect(source).toContain('href: "/#academy"');
+    expect(source).toContain('href: "/#diagnostic"');
     expect(source).toContain('href="/"');
+    expect(source).toContain('rel: "canonical"');
   });
 
   it("keeps a visible keyboard focus style on navigation", () => {
