@@ -13,6 +13,7 @@ import {
   Building2,
   LineChart,
 } from "lucide-react";
+import { HeroPerspectiveGrid } from "../components/HeroPerspectiveGrid";
 import { KithPayLogo } from "../components/KithPayLogo";
 import { AcademyKnowledgeCards } from "../components/AcademyKnowledgeCards";
 import { MerchantHealthHeader } from "../components/MerchantHealthHeader";
@@ -109,8 +110,8 @@ const MiniChart = () => (
 
 function BrandMark() {
   return (
-    <a href="/" className="inline-flex w-fit justify-self-start rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring">
-      <KithPayLogo height={36} className="h-9 w-auto" />
+    <a href="/" className="inline-flex h-9 w-[125px] items-center justify-self-start rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring">
+      <KithPayLogo height={36} className="h-9 w-auto origin-left scale-[1.21]" />
     </a>
   );
 }
@@ -303,7 +304,7 @@ function HealthEngine() {
 function Hero() {
   return (
     <section className="relative overflow-hidden bg-background">
-      <div aria-hidden="true" className="absolute inset-0 opacity-60 [background-image:linear-gradient(var(--border)_1px,transparent_1px),linear-gradient(90deg,var(--border)_1px,transparent_1px)] [background-size:56px_56px] [mask-image:linear-gradient(to_bottom,black,transparent_78%)]" />
+      <HeroPerspectiveGrid />
       <div className="relative mx-auto grid w-full min-w-0 min-h-[650px] max-w-7xl items-center gap-16 px-5 py-20 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:px-8 lg:py-24">
         <div className="min-w-0 max-w-xl">
           <p className="mb-8 flex w-fit max-w-full items-center gap-2 rounded-full border border-border bg-card px-3 py-2 text-xs font-semibold text-muted-foreground"><span className="size-1.5 shrink-0 rounded-full bg-accent" /><span className="min-w-0">High-risk isn't dark. It's misunderstood.</span></p>

@@ -288,6 +288,23 @@ describe("homepage — quality", () => {
     expect(route).toContain("prefers-reduced-motion");
   });
 
+  it("keeps the enlarged logo inside the original header and the hero grid behind the copy", () => {
+    const brand = sliceBetween("function BrandMark", "function destinationHref");
+    expect(brand).toContain("height={36}");
+    expect(brand).toContain("h-9");
+    expect(brand).toContain("w-[125px]");
+    expect(brand).toContain("scale-[1.21]");
+    const header = sliceBetween("export function Header", "function HealthEngine");
+    expect(header).toContain("lg:h-20");
+    expect(source).toContain('className="grid h-1.5 grid-cols-4"');
+    const hero = sliceBetween("function Hero", "function TrustBand");
+    expect(hero.indexOf("<HeroPerspectiveGrid />")).toBeGreaterThanOrEqual(0);
+    expect(hero.indexOf("<HeroPerspectiveGrid />")).toBeLessThan(hero.indexOf("Respect the rules."));
+    const cover = readFileSync(join(process.cwd(), "src/components/ComingSoonCover.tsx"), "utf8");
+    expect(cover).toContain('className="h-12 w-auto"');
+    expect(cover).not.toContain("scale-");
+  });
+
   it("keeps keyboard order aligned with the header and gives text links a 24px target", () => {
     const header = sliceBetween("function Header", "function HealthEngine");
     expect(header.indexOf("Talk to an advisor")).toBeGreaterThan(header.indexOf("Primary navigation"));
