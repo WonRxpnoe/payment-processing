@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Footer, Header } from "../index";
 import { ACADEMY_PATH } from "../../lib/academy-risk-seo";
+import { socialImageMeta } from "../../lib/social-image";
 import { readOrigin } from "../../lib/request-origin";
 import { AcademyHeaderNav } from "../../components/AcademyHeaderNav";
 import { AcademyExtendedCards } from "../../components/AcademyExtendedCards";
@@ -23,6 +24,7 @@ export const Route = createFileRoute("/academy/")({
         { name: "twitter:card", content: "summary_large_image" },
         { name: "twitter:title", content: "Merchant Academy | KithPay" },
         { name: "twitter:description", content: description },
+        ...socialImageMeta(loaderData?.origin, "academy"),
       ],
       links: [{ rel: "canonical", href: pageUrl }],
     };

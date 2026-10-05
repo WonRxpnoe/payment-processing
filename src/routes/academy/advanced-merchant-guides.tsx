@@ -3,6 +3,7 @@ import { Footer, Header } from "../index";
 import { AcademyExtendedCardDetails } from "../../components/AcademyExtendedCards";
 import { ViewAllAcademyHeaderNav } from "../../components/ViewAllAcademyHeaderNav";
 import { readOrigin } from "../../lib/request-origin";
+import { socialImageMeta } from "../../lib/social-image";
 import {
   ACADEMY_ADVANCED_DESCRIPTION,
   ACADEMY_ADVANCED_KEYWORDS,
@@ -33,6 +34,7 @@ export const Route = createFileRoute("/academy/advanced-merchant-guides")({
         { name: "twitter:card", content: "summary_large_image" },
         { name: "twitter:title", content: ACADEMY_ADVANCED_SOCIAL_TITLE },
         { name: "twitter:description", content: ACADEMY_ADVANCED_SOCIAL_DESCRIPTION },
+        ...socialImageMeta(loaderData?.origin, "academyAdvanced"),
       ],
       links: [{ rel: "canonical", href: pageUrl }],
       scripts: [

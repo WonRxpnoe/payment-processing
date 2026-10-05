@@ -9,6 +9,7 @@ import {
   TAXONOMY_ROBOTS,
   breadcrumbListSchema,
 } from "../lib/merchant-taxonomy";
+import { socialImageMeta } from "../lib/social-image";
 import { Footer, Header } from "./index";
 
 const RESOURCES_TITLE = "Merchant Resources | KithPay";
@@ -32,6 +33,7 @@ export const Route = createFileRoute("/resources")({
         { name: "twitter:card", content: "summary_large_image" },
         { name: "twitter:title", content: RESOURCES_TITLE },
         { name: "twitter:description", content: RESOURCES_DESCRIPTION },
+        ...socialImageMeta(loaderData?.origin, "resources"),
       ],
       links: [{ rel: "canonical", href: pageUrl }],
       scripts: [

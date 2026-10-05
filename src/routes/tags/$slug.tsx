@@ -5,7 +5,12 @@ import { supplementForViewAllSlug } from "../../components/AcademyExtendedCards"
 import { ViewAllAcademyHeaderNav } from "../../components/ViewAllAcademyHeaderNav";
 import { MERCHANT_HEALTH_PATH } from "../../lib/merchant-health-seo";
 import { readOrigin } from "../../lib/request-origin";
-import { ACADEMY_HUB, academyTopicBySlug, academyViewAllTopicBySlug } from "../../lib/academy-taxonomy";
+import { socialImageMeta } from "../../lib/social-image";
+import {
+  ACADEMY_HUB,
+  academyTopicBySlug,
+  academyViewAllTopicBySlug,
+} from "../../lib/academy-taxonomy";
 import {
   MERCHANT_RESOURCES_LABEL,
   MERCHANT_RESOURCES_PATH,
@@ -89,6 +94,7 @@ export const Route = createFileRoute("/tags/$slug")({
         { name: "twitter:card", content: "summary_large_image" },
         { name: "twitter:title", content: title },
         { name: "twitter:description", content: description },
+        ...socialImageMeta(loaderData?.origin, topic?.academy ? "academy" : "resources"),
       ],
       links: [{ rel: "canonical", href: pageUrl }],
       scripts: [

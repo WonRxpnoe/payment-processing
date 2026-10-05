@@ -5,6 +5,7 @@ import {
   createRootRouteWithContext,
   redirect,
   useRouter,
+  useRouterState,
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
@@ -15,11 +16,14 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { ComingSoonCover } from "../components/ComingSoonCover";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { readOrigin } from "../lib/request-origin";
+import { isSandboxCheckoutPath } from "../lib/sandbox-checkout-path";
 import {
   decideSitePreview,
   SITE_PREVIEW_COOKIE,
   type SitePreviewDecision,
 } from "../lib/site-preview";
+import { BRAND_ICON_LINKS, BRAND_THEME_COLOR, socialImageMeta } from "../lib/social-image";
 
 const readSitePreview = createIsomorphicFn()
   .server((): SitePreviewDecision => {
@@ -101,17 +105,21 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
 }
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
-  head: () => ({
+  head: ({ loaderData }) => ({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "KithPay" },
       { name: "description", content: "Stable, transparent payment processing for high-risk businesses — with the guidance to grow safely." },
       { name: "author", content: "KithPay" },
+      { name: "theme-color", content: BRAND_THEME_COLOR },
+      { property: "og:site_name", content: "KithPay" },
+      { property: "og:locale", content: "en_US" },
       { property: "og:title", content: "KithPay" },
       { property: "og:description", content: "Stable, transparent payment processing for high-risk businesses — with the guidance to grow safely." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      ...socialImageMeta(loaderData?.origin),
       { name: "robots", content: "noindex, nofollow" },
     ],
     links: [
@@ -125,7 +133,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=DM+Sans:wght@500;600;700&family=Manrope:wght@400;500;600&display=swap",
       },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      ...BRAND_ICON_LINKS,
     ],
   }),
   loader: () => {
@@ -139,7 +147,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         headers: decision.setCookie ? { "Set-Cookie": decision.setCookie } : undefined,
       });
     }
-    return { preview: decision.preview };
+    return { preview: decision.preview, origin: readOrigin() };
   },
   shellComponent: RootShell,
   component: RootComponent,
@@ -164,8 +172,9 @@ function RootShell({ children }: { children: ReactNode }) {
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const { preview } = Route.useLoaderData();
+  const pathname = useRouterState({ select: (state) => state.location.pathname });
 
-  if (!preview) return <ComingSoonCover />;
+  if (!preview && !isSandboxCheckoutPath(pathname)) return <ComingSoonCover />;
 
   return (
     <QueryClientProvider client={queryClient}>

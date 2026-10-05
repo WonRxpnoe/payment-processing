@@ -20,6 +20,9 @@ dist-ssr
 .wrangler/
 .dev.vars
 
+# Downloaded font used only to render brand assets
+scripts/.font-cache/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

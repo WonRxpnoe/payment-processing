@@ -21,6 +21,20 @@ npm i
 npm run dev
 ```
 
+## Brand assets
+
+The favicon, installed-app icons, web manifest, and the share card for each page
+in `public/` are rendered from `public/brand/kithpay-logo.svg`,
+`public/brand/kithpay-mark.svg`, and the card copy in `src/lib/social-cards.ts`.
+After editing any of those, regenerate and commit the output:
+
+```sh
+npm run brand:assets
+```
+
+The generator records the digest of its inputs in `scripts/brand-assets.lock.json`,
+so `npm test` fails if the committed images are older than the sources.
+
 ## Built with
 
 - TanStack Start

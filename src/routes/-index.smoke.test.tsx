@@ -193,7 +193,7 @@ describe("academy risk", () => {
 });
 
 describe("academy advanced guide", () => {
-  it("publishes crawlable head tags without a missing social image", () => {
+  it("publishes crawlable head tags and inherits the shared social card", () => {
     const seo = readFileSync(join(process.cwd(), "src/lib/academy-advanced-seo.ts"), "utf8");
     const page = readFileSync(join(process.cwd(), "src/routes/academy/advanced-merchant-guides.tsx"), "utf8");
     const index = readFileSync(join(process.cwd(), "src/routes/academy/index.tsx"), "utf8");

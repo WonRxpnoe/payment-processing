@@ -1,9 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { createIsomorphicFn } from "@tanstack/react-start";
-import { getRequestUrl } from "@tanstack/react-start/server";
 import { Footer, Header } from "../index";
 import { AcademyCardDetails } from "../../components/AcademyKnowledgeCards";
 import { AcademyHeaderNav } from "../../components/AcademyHeaderNav";
+import { readOrigin } from "../../lib/request-origin";
+import { socialImageMeta } from "../../lib/social-image";
 import {
   ACADEMY_RISK_DESCRIPTION,
   ACADEMY_RISK_KEYWORDS,
@@ -14,10 +14,6 @@ import {
   ACADEMY_RISK_TITLE,
   academyRiskSchema,
 } from "../../lib/academy-risk-seo";
-
-const readOrigin = createIsomorphicFn()
-  .server(() => getRequestUrl({ xForwardedHost: true, xForwardedProto: true }).origin)
-  .client(() => window.location.origin);
 
 export const Route = createFileRoute("/academy/merchant-risk-fundamentals")({
   loader: () => ({ origin: readOrigin() }),
@@ -37,6 +33,7 @@ export const Route = createFileRoute("/academy/merchant-risk-fundamentals")({
         { name: "twitter:card", content: "summary_large_image" },
         { name: "twitter:title", content: ACADEMY_RISK_TITLE },
         { name: "twitter:description", content: ACADEMY_RISK_SOCIAL_DESCRIPTION },
+        ...socialImageMeta(loaderData?.origin, "academyRisk"),
       ],
       links: [{ rel: "canonical", href: pageUrl }],
       scripts: [

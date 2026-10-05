@@ -1,9 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { createIsomorphicFn } from "@tanstack/react-start";
-import { getRequestUrl } from "@tanstack/react-start/server";
 import { MerchantHealthBody } from "../components/MerchantHealthBody";
 import { MerchantHealthHeader } from "../components/MerchantHealthHeader";
 import { Footer, Header } from "./index";
+import { readOrigin } from "../lib/request-origin";
+import { socialImageMeta } from "../lib/social-image";
 import {
   MERCHANT_HEALTH_DESCRIPTION,
   MERCHANT_HEALTH_FAQ,
@@ -15,10 +15,6 @@ import {
   MERCHANT_HEALTH_TITLE,
   merchantHealthSchema,
 } from "../lib/merchant-health-seo";
-
-const readOrigin = createIsomorphicFn()
-  .server(() => getRequestUrl({ xForwardedHost: true, xForwardedProto: true }).origin)
-  .client(() => window.location.origin);
 
 export const Route = createFileRoute("/merchant-health")({
   loader: () => ({ origin: readOrigin() }),
@@ -38,6 +34,7 @@ export const Route = createFileRoute("/merchant-health")({
         { name: "twitter:card", content: "summary_large_image" },
         { name: "twitter:title", content: MERCHANT_HEALTH_SOCIAL_TITLE },
         { name: "twitter:description", content: MERCHANT_HEALTH_SOCIAL_DESCRIPTION },
+        ...socialImageMeta(loaderData?.origin, "merchantHealth"),
       ],
       links: [{ rel: "canonical", href: pageUrl }],
       scripts: [
