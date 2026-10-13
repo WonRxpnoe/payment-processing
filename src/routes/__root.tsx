@@ -17,7 +17,7 @@ import appCss from "../styles.css?url";
 import { ComingSoonCover } from "../components/ComingSoonCover";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { readOrigin } from "../lib/request-origin";
-import { isSandboxCheckoutPath } from "../lib/sandbox-checkout-path";
+import { isOpenSandboxPath } from "../lib/sandbox-checkout-path";
 import {
   decideSitePreview,
   SITE_PREVIEW_COOKIE,
@@ -174,7 +174,7 @@ function RootComponent() {
   const { preview } = Route.useLoaderData();
   const pathname = useRouterState({ select: (state) => state.location.pathname });
 
-  if (!preview && !isSandboxCheckoutPath(pathname)) return <ComingSoonCover />;
+  if (!preview && !isOpenSandboxPath(pathname)) return <ComingSoonCover />;
 
   return (
     <QueryClientProvider client={queryClient}>

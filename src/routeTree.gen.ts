@@ -15,6 +15,8 @@ import { Route as ResourcesRouteImport } from './routes/resources'
 import { Route as AcademyIndexRouteImport } from './routes/academy/index'
 import { Route as AcademyAdvancedMerchantGuidesRouteImport } from './routes/academy/advanced-merchant-guides'
 import { Route as AcademyMerchantRiskFundamentalsRouteImport } from './routes/academy/merchant-risk-fundamentals'
+import { Route as SandboxApplyRouteImport } from './routes/sandbox/apply'
+import { Route as SandboxCheckoutRouteImport } from './routes/sandbox/checkout'
 import { Route as TagsSlugRouteImport } from './routes/tags/$slug'
 
 const IndexRoute = IndexRouteImport.update({
@@ -49,6 +51,16 @@ const AcademyMerchantRiskFundamentalsRoute =
     path: '/academy/merchant-risk-fundamentals',
     getParentRoute: () => rootRouteImport,
   } as any)
+const SandboxApplyRoute = SandboxApplyRouteImport.update({
+  id: '/sandbox/apply',
+  path: '/sandbox/apply',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SandboxCheckoutRoute = SandboxCheckoutRouteImport.update({
+  id: '/sandbox/checkout',
+  path: '/sandbox/checkout',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TagsSlugRoute = TagsSlugRouteImport.update({
   id: '/tags/$slug',
   path: '/tags/$slug',
@@ -61,6 +73,8 @@ export interface FileRoutesByFullPath {
   '/resources': typeof ResourcesRoute
   '/academy/advanced-merchant-guides': typeof AcademyAdvancedMerchantGuidesRoute
   '/academy/merchant-risk-fundamentals': typeof AcademyMerchantRiskFundamentalsRoute
+  '/sandbox/apply': typeof SandboxApplyRoute
+  '/sandbox/checkout': typeof SandboxCheckoutRoute
   '/tags/$slug': typeof TagsSlugRoute
   '/academy/': typeof AcademyIndexRoute
 }
@@ -70,6 +84,8 @@ export interface FileRoutesByTo {
   '/resources': typeof ResourcesRoute
   '/academy/advanced-merchant-guides': typeof AcademyAdvancedMerchantGuidesRoute
   '/academy/merchant-risk-fundamentals': typeof AcademyMerchantRiskFundamentalsRoute
+  '/sandbox/apply': typeof SandboxApplyRoute
+  '/sandbox/checkout': typeof SandboxCheckoutRoute
   '/tags/$slug': typeof TagsSlugRoute
   '/academy': typeof AcademyIndexRoute
 }
@@ -80,6 +96,8 @@ export interface FileRoutesById {
   '/resources': typeof ResourcesRoute
   '/academy/advanced-merchant-guides': typeof AcademyAdvancedMerchantGuidesRoute
   '/academy/merchant-risk-fundamentals': typeof AcademyMerchantRiskFundamentalsRoute
+  '/sandbox/apply': typeof SandboxApplyRoute
+  '/sandbox/checkout': typeof SandboxCheckoutRoute
   '/tags/$slug': typeof TagsSlugRoute
   '/academy/': typeof AcademyIndexRoute
 }
@@ -91,6 +109,8 @@ export interface FileRouteTypes {
     | '/resources'
     | '/academy/advanced-merchant-guides'
     | '/academy/merchant-risk-fundamentals'
+    | '/sandbox/apply'
+    | '/sandbox/checkout'
     | '/tags/$slug'
     | '/academy/'
   fileRoutesByTo: FileRoutesByTo
@@ -100,6 +120,8 @@ export interface FileRouteTypes {
     | '/resources'
     | '/academy/advanced-merchant-guides'
     | '/academy/merchant-risk-fundamentals'
+    | '/sandbox/apply'
+    | '/sandbox/checkout'
     | '/tags/$slug'
     | '/academy'
   id:
@@ -109,6 +131,8 @@ export interface FileRouteTypes {
     | '/resources'
     | '/academy/advanced-merchant-guides'
     | '/academy/merchant-risk-fundamentals'
+    | '/sandbox/apply'
+    | '/sandbox/checkout'
     | '/tags/$slug'
     | '/academy/'
   fileRoutesById: FileRoutesById
@@ -119,6 +143,8 @@ export interface RootRouteChildren {
   ResourcesRoute: typeof ResourcesRoute
   AcademyAdvancedMerchantGuidesRoute: typeof AcademyAdvancedMerchantGuidesRoute
   AcademyMerchantRiskFundamentalsRoute: typeof AcademyMerchantRiskFundamentalsRoute
+  SandboxApplyRoute: typeof SandboxApplyRoute
+  SandboxCheckoutRoute: typeof SandboxCheckoutRoute
   TagsSlugRoute: typeof TagsSlugRoute
   AcademyIndexRoute: typeof AcademyIndexRoute
 }
@@ -167,6 +193,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AcademyMerchantRiskFundamentalsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/sandbox/apply': {
+      id: '/sandbox/apply'
+      path: '/sandbox/apply'
+      fullPath: '/sandbox/apply'
+      preLoaderRoute: typeof SandboxApplyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sandbox/checkout': {
+      id: '/sandbox/checkout'
+      path: '/sandbox/checkout'
+      fullPath: '/sandbox/checkout'
+      preLoaderRoute: typeof SandboxCheckoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/tags/$slug': {
       id: '/tags/$slug'
       path: '/tags/$slug'
@@ -183,6 +223,8 @@ const rootRouteChildren: RootRouteChildren = {
   ResourcesRoute: ResourcesRoute,
   AcademyAdvancedMerchantGuidesRoute: AcademyAdvancedMerchantGuidesRoute,
   AcademyMerchantRiskFundamentalsRoute: AcademyMerchantRiskFundamentalsRoute,
+  SandboxApplyRoute: SandboxApplyRoute,
+  SandboxCheckoutRoute: SandboxCheckoutRoute,
   TagsSlugRoute: TagsSlugRoute,
   AcademyIndexRoute: AcademyIndexRoute,
 }

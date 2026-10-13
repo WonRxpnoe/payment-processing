@@ -235,3 +235,25 @@
   .route-pulse, .chart-draw { animation: none; }
   .health-engine-card, .health-engine-backplate, .health-engine-orbit { transform: none; transition: none; }
 }
+
+.merchant-application input::placeholder {
+  color: oklch(0.84 0.004 264.5);
+  opacity: 1;
+}
+
+.merchant-application input[type="date"]:invalid,
+.merchant-application input[type="date"]:invalid::-webkit-datetime-edit,
+.merchant-application input[type="date"]:invalid::-webkit-datetime-edit-text,
+.merchant-application input[type="date"]:invalid::-webkit-datetime-edit-month-field,
+.merchant-application input[type="date"]:invalid::-webkit-datetime-edit-day-field,
+.merchant-application input[type="date"]:invalid::-webkit-datetime-edit-year-field {
+  color: oklch(0.84 0.004 264.5);
+}
+
+.merchant-application input[type="file"] {
+  color: oklch(0.84 0.004 264.5);
+}
+
+.merchant-application input[type="file"].has-file {
+  color: var(--foreground);
+}
